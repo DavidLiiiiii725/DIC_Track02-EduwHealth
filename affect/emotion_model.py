@@ -1,0 +1,15 @@
+from transformers import pipeline
+
+class EmotionDetector:
+    def __init__(self):
+        print("[APU] Loading emotion model... (first time may take a while)")
+        self.model = pipeline(
+            "text-classification",
+            model="j-hartmann/emotion-english-distilroberta-base",
+            return_all_scores=True
+        )
+        print("[APU] Emotion model loaded.")
+
+    def detect(self, text):
+        scores = self.model(text)[0]
+        return {s["label"]: s["score"] for s in scores}
